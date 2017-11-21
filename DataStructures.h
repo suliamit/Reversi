@@ -13,10 +13,10 @@
 	typedef enum{empty=0,black,white} state;//present the state of cell in board
 	typedef struct point{
 	public:
-			int x;
-			int y;
-			point(int x,int y):x(x),y(y){};
-			bool operator==(point q){return x==q.x & y==q.y;}
+			int Row;
+			int Col;
+			point(int Row,int Col):Row(Row),Col(Col){};
+			bool operator==(point q){return Row==q.Row & Col==q.Col;}
 		}point;
 
 

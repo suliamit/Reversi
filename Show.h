@@ -19,7 +19,8 @@ public:
 	virtual void showWinner(bool)=0;//printing who the winner is. the winner is being present by the boolean parameter
 	virtual void printBadLocMess()=0;//printing a bad location message when player choose invalid location
 	virtual void printBadLocMess2()=0;//printing a bad location message when player choose invalid move
-	virtual void showMove(const point*,const bool turn)=0;//printing the last move happen
+	virtual void showMove(const point*,const bool )=0;//printing the last move happen
+	virtual pair<int,char>* getGameOptions()=0;//printing the game options and return what the player chose
 	virtual ~Show(){ };
 };
 

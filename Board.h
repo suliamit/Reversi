@@ -22,7 +22,7 @@ public:
 	state getCell(point);//return the cell in the index that being present by point
 	void print();// print the current board
 	bool isFull(); // check if the board is Full
-	void makeMove(point * location,bool turn);//sets the player's choice in the board. turn: true=player 1 false=player 2
+	void makeMove(point * location,bool);//sets the player's choice in the board.
 	~Board();
 	private:
 	int size;

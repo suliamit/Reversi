@@ -8,18 +8,28 @@
 #include "Reversi.h"
 
 Reversi::Reversi() {
-	p1=new HumanPlayer(true);
-	p2=new HumanPlayer(false);
-	board=new Board();
-	turn=true;
+initial();
+}
+
+void Reversi::initial(){
 	show=new ConsoleShow();
+	pair<int,char> *option=show->getGameOptions();
+	p1=new HumanPlayer(false);
+	int size=option->first;
+	char type=option->second;
+	board=new Board(size);
+	if(type=='h')
+		p2=new HumanPlayer();
+	else
+		//p2=new BotPlayer();
+	isBlack_turn=true;
 }
 
 void Reversi::startGame(){
 	while(!gameEnd()){
 	show->showBoard(board);
 	doTurn();
-	turn=!turn;
+	isBlack_turn=!isBlack_turn;
 	}
 	endGame();
 }
@@ -33,28 +43,28 @@ void Reversi::endGame(){
 }
 
 void Reversi::doTurn(){
-	vector<point>  posMov=getValidMoves(turn);
-	show->showPossibleMoves(&posMov,turn);
+	vector<point>  posMov=getValidMoves(isBlack_turn);
+	show->showPossibleMoves(&posMov,isBlack_turn);
 	if(posMov.empty())return;
-	point playerChoice=((turn?p1:p2)->getPlayerChoice(&posMov));
+	point playerChoice=((isBlack_turn?p1:p2)->getPlayerChoice(&posMov));
 	makeMove(playerChoice);
-	show->showMove(&playerChoice,turn);
+	show->showMove(&playerChoice,isBlack_turn);
 }
 
-vector<vector<point> >  Reversi::getTilesToFlip(point cell,const bool turn){
+vector<vector<point> >  Reversi::getTilesToFlip(point cell,const bool isBlack_turn){
 	vector<vector<point> > res;
 	vector<point> tmp;
-		int xstart=cell.x;
-		int ystart=cell.y;
-		state otile=turn?white:black;//present the other player's tile
-		state ctile=turn?black:white;
+		int xstart=cell.Row;
+		int ystart=cell.Col;
+		state otile=isBlack_turn?white:black;//present the other player's tile
+		state ctile=isBlack_turn?black:white;
 		const point p[8]={point(-1,1),point(0,1),point(1,1),point(1,0),point(1,-1),point(0,-1),point(-1,-1),point(-1,0)};
 		for(int i=0;i<8;i++){
-			xstart=cell.x;
-			ystart=cell.y;
+			xstart=cell.Row;
+			ystart=cell.Col;
 
-			int xd=p[i].x;
-			int yd=p[i].y;
+			int xd=p[i].Row;
+			int yd=p[i].Col;
 			xstart+=xd;
 			ystart+=yd;
 			if(!isValidLoc(point(xstart,ystart)))
@@ -92,12 +102,12 @@ vector<vector<point> >  Reversi::getTilesToFlip(point cell,const bool turn){
 }
 
 void Reversi::makeMove(point pChoice){
-	vector<vector<point> > tilesToFlip=((getTilesToFlip(pChoice,turn)));
+	vector<vector<point> > tilesToFlip=((getTilesToFlip(pChoice,isBlack_turn)));
 	for(int i=0;i<tilesToFlip.size();i++){
 		vector<point> tiles=(tilesToFlip[i]);
 		for(int j=0;j<tiles.size();j++){
 			point tile=(tiles[j]);
-			board->makeMove(&tile,turn);
+			board->makeMove(&tile,isBlack_turn);
 		}
 	}
 }
@@ -116,27 +126,27 @@ bool Reversi::boardFull(){
 }
 
 bool Reversi::isValidLoc(point  location){
-	return location.x>=0 && location.x<board->getSize() && location.y>=0 && location.y<board->getSize();
+	return location.Row>=0 && location.Row<board->getSize() && location.Col>=0 && location.Col<board->getSize();
 }
 
 bool Reversi::isLocFree(point * location){
 	return board->getCell(*location)==empty;
 }
 
-bool Reversi::isValidMove(point *location,const bool turn){
+bool Reversi::isValidMove(point *location,const bool isBlack_turn){
 	if(!isValidLoc(*location) || !isLocFree(location)){
 		return 0;
 	}
-	int xstart=location->x;
-	int ystart=location->y;
-	state otile=turn?white:black;//present the other player's tile
-	state ctile=turn?black:white;
+	int xstart=location->Row;
+	int ystart=location->Col;
+	state otile=isBlack_turn?white:black;//present the other player's tile
+	state ctile=isBlack_turn?black:white;
 	const point p[8]={point(-1,1),point(0,1),point(1,1),point(1,0),point(1,-1),point(0,-1),point(-1,-1),point(-1,0)};
 	for(int i=0;i<8;i++){
-		xstart=location->x;
-		ystart=location->y;
-		int xd=p[i].x;
-		int yd=p[i].y;
+		xstart=location->Row;
+		ystart=location->Col;
+		int xd=p[i].Row;
+		int yd=p[i].Col;
 		xstart+=xd;
 		ystart+=yd;
 		if(!isValidLoc(point(xstart,ystart)))
@@ -162,12 +172,12 @@ bool Reversi::isValidMove(point *location,const bool turn){
 	return false;
 }
 
-vector<point>  Reversi::getValidMoves(const bool turn){
+vector<point>  Reversi::getValidMoves(const bool isBlack_turn){
 	vector<point>  res;
 	for(int i=0;i<board->getSize();i++){
 		for(int j=0;j<board->getSize();j++){
 				point loc(i,j);
-				if(isValidMove(&loc,turn)){
+				if(isValidMove(&loc,isBlack_turn)){
 				res.push_back(loc);
 				}
 		}

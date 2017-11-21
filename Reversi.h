@@ -18,6 +18,7 @@ using namespace std;
 class Reversi {//manger of the game functionality
 public:
 	Reversi();
+	void initial();
 	bool isValidMove(point *,const bool);//check if a given point is a valid move for a given player(choose by the value of turn)
 	vector<point>  getValidMoves(const bool);//return a vector of all valid points for a given player(choose by the value of turn)
 	vector<vector<point> >  getTilesToFlip(point ,const bool);//return a vector of all the points that needs to flip for a given point and turn
@@ -34,7 +35,7 @@ private:
 	Player * p1;
 	Player * p2;
 	Board * board;
-	bool turn;
+	bool isBlack_turn;
 	Show * show;
 };
 

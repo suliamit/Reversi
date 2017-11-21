@@ -58,7 +58,7 @@ int Board::amountX(){
 }
 
 state Board::getCell(point p){
-	return board[p.x][p.y];
+	return board[p.Row][p.Col];
 }
 
 int Board::amountO(){
@@ -105,12 +105,12 @@ void Board::print(){
 	}
 }
 
-void Board::makeMove(point * location,bool turn){
-	if(turn){
-		board[location->x][location->y]=black;
+void Board::makeMove(point * location,bool isBlack_turn){
+	if(isBlack_turn){
+		board[location->Row][location->Col]=black;
 	}
 	else
-		board[location->x][location->y]=white;
+		board[location->Row][location->Col]=white;
 
 }
 

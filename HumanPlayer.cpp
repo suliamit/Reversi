@@ -8,7 +8,7 @@
 #include "HumanPlayer.h"
 
 
-HumanPlayer::HumanPlayer(bool t) {this->turn=t;
+HumanPlayer::HumanPlayer(bool t) {this->isBlack=t;
 show=new ConsoleShow();
 }
 

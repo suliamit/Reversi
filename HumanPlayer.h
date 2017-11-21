@@ -18,7 +18,7 @@ public:
 	virtual ~HumanPlayer();
 private:
 	Show *show;
-	bool turn;
+	bool isBlack;
 };
 
 #endif /* HUMANPLAYER_H_ */
